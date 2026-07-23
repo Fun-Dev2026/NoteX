@@ -28,7 +28,7 @@ A simple, **no‑login, shareable online notepad**. Type or paste text, get a un
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/NoteX.git
+git clone https://github.com/Fun-Dev2026/NoteX.git
 cd NoteX
 
 # Create a virtual environment
