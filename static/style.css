@@ -1,0 +1,433 @@
+:root {
+    --bg-color: #0f172a;
+    --header-bg: rgba(15, 23, 42, 0.85);
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --accent-color: #6366f1;
+    --status-green: #10b981;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Fira Code', Consolas, Monaco, monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    overflow: hidden;
+}
+
+.notepad-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    width: 100vw;
+    background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 40%);
+    overflow: hidden;
+}
+
+.notepad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    user-select: none;
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+    column-gap: 1rem;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+}
+
+.logo {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.logo-clickable {
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logo-clickable:hover {
+    opacity: 0.85;
+}
+
+.divider {
+    color: var(--border-color);
+}
+
+.code-wrapper {
+    display: inline-flex;
+    align-items: center;
+}
+
+.note-code {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: clamp(0.78rem, 1.8vw, 0.88rem);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.note-code:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.note-code-input {
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    background-color: rgba(15, 23, 42, 0.95);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--accent-color);
+    font-size: clamp(0.78rem, 1.8vw, 0.88rem);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    width: 130px;
+    min-height: 32px;
+}
+
+.note-code-input.hidden, .note-code.hidden {
+    display: none !important;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    min-height: 36px;
+    border-radius: 8px;
+    font-size: clamp(0.75rem, 1.5vw, 0.82rem);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    white-space: nowrap;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.action-btn.copied {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.action-btn-warning:hover {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.action-btn-danger:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(0.72rem, 1.5vw, 0.8rem);
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 5px 10px;
+    min-height: 36px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--status-green);
+    box-shadow: 0 0 8px var(--status-green);
+    flex-shrink: 0;
+}
+
+/* QR Code Modal Popup */
+.qr-modal {
+    position: absolute;
+    top: 60px;
+    right: 24px;
+    z-index: 100;
+    transition: all 0.2s ease;
+}
+
+.qr-modal.hidden {
+    display: none;
+}
+
+.qr-card {
+    background: #1e293b;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 220px;
+    backdrop-filter: blur(12px);
+}
+
+.qr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.qr-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    min-height: 32px;
+    min-width: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-close:hover {
+    color: var(--text-primary);
+}
+
+.qrcode-wrapper {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-url-text {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    word-break: break-all;
+    text-align: center;
+    max-width: 190px;
+}
+
+.notepad-body {
+    flex: 1;
+    display: flex;
+    padding: 1.25rem 1.5rem;
+    overflow: hidden;
+}
+
+.notepad-input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.6;
+    tab-size: 4;
+}
+
+.notepad-input::placeholder {
+    color: #475569;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+/* Tablet & Smaller Desktops (<= 768px) */
+@media (max-width: 768px) {
+    .notepad-header {
+        padding: 0.65rem 1rem;
+        row-gap: 0.65rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 0.4rem;
+    }
+
+    .action-btn {
+        padding: 6px 10px;
+        min-height: 38px;
+        flex: 0 1 auto;
+    }
+
+    .status-badge {
+        margin-left: auto;
+    }
+
+    .notepad-body {
+        padding: 1rem;
+    }
+}
+
+/* Mobile Devices (<= 520px) */
+@media (max-width: 520px) {
+    .notepad-header {
+        padding: 0.6rem 0.85rem;
+    }
+
+    .brand {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 0.4rem;
+    }
+
+    .action-btn {
+        width: 100%;
+        padding: 8px 4px;
+        min-height: 40px;
+        font-size: 0.78rem;
+    }
+
+    .status-badge {
+        grid-column: 1 / -1;
+        justify-content: center;
+        margin-left: 0;
+        min-height: 32px;
+        padding: 4px 10px;
+    }
+
+    .notepad-body {
+        padding: 0.75rem 0.85rem;
+    }
+
+    /* Modal behaves as a centered fixed overlay on mobile */
+    .qr-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        padding: 1rem;
+    }
+
+    .qr-modal.hidden {
+        display: none !important;
+    }
+
+    .qr-card {
+        width: 100%;
+        max-width: 250px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* Small Mobile Devices (<= 380px) */
+@media (max-width: 380px) {
+    .header-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .status-badge {
+        grid-column: 1 / -1;
+    }
+
+    .action-btn .btn-text {
+        font-size: 0.75rem;
+    }
+}
+
+.notepad-footer {
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    color: var(--text-muted);
+    text-align: center;
+    padding: 0.5rem 1rem;
+    margin-top: auto;
+    background: transparent;
+    line-height: 1.4;
+}
+
+.notepad-footer a.footer-link {
+    color: var(--text-muted);
+    text-decoration: underline;
+}
+
+.notepad-footer a.footer-link:hover {
+    color: var(--text-primary);
+    text-decoration: none;
+}

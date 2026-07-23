@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteX - {{ code }}</title>
+    <meta property="og:title" content="NoteX">
+    <meta property="og:description" content="A simple online notepad">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="notepad-container" data-code="{{ code }}">
+        <header class="notepad-header">
+            <div class="brand">
+                <span id="brand-logo" class="logo logo-clickable" title="Click to refresh note">NoteX</span>
+                <span class="divider">/</span>
+                <div class="code-wrapper">
+                    <span id="note-code-display" class="note-code" title="Click to edit note code">{{ code }}</span>
+                    <input type="text" id="note-code-input" class="note-code-input hidden" value="{{ code }}" spellcheck="false" autocomplete="off">
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="refresh-btn" class="action-btn" title="Refresh note content from server">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    <span class="btn-text">Refresh</span>
+                </button>
+                <button id="new-btn" class="action-btn" title="Open a new blank note in a new tab">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span class="btn-text">New</span>
+                </button>
+                <button id="share-btn" class="action-btn" title="Copy note URL to clipboard">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                    <span class="btn-text">Share Link</span>
+                </button>
+                <button id="qr-btn" class="action-btn" title="Show QR code for mobile scanning">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span class="btn-text">QR Code</span>
+                </button>
+                <button id="copy-btn" class="action-btn" title="Copy note text content to clipboard">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span class="btn-text">Copy</span>
+                </button>
+                <button id="clear-btn" class="action-btn action-btn-warning" title="Clear note content">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span class="btn-text">Clear</span>
+                </button>
+                <button id="delete-btn" class="action-btn action-btn-danger" title="Permanently delete note">
+                    <svg class="icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    <span class="btn-text">Delete</span>
+                </button>
+                <div class="status-badge" id="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Loading...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- QR Code Modal Popup -->
+        <div id="qr-modal" class="qr-modal hidden">
+            <div class="qr-card">
+                <div class="qr-header">
+                    <span>Scan on Mobile</span>
+                    <button id="qr-close-btn" class="qr-close" aria-label="Close QR Code">&times;</button>
+                </div>
+                <div id="qrcode-wrapper" class="qrcode-wrapper">
+                    <div id="qrcode"></div>
+                </div>
+                <p class="qr-url-text" id="qr-url-display"></p>
+            </div>
+        </div>
+
+        <main class="notepad-body">
+            <textarea 
+                id="note-content" 
+                class="notepad-input" 
+                placeholder="Start typing your note here..." 
+                spellcheck="false"
+                autocomplete="off"
+                autofocus
+            ></textarea>
+        </main>
+        <footer class="notepad-footer">
+            Designed and maintained by <a href="https://webcomb.net" class="footer-link">WebComb</a>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
