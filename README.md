@@ -2,6 +2,8 @@
 
 A simple, **no‑login, shareable online notepad**. Type or paste text, get a unique link, and access the same note from any device.
 
+**URL:** https://notex.webcomb.net/
+
 ---
 
 ## Features
